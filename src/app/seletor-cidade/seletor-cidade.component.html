@@ -1,0 +1,17 @@
+  <mat-form-field class="seletor-cidade">
+    <input
+      matInput
+      placeholder="Digite o nome da cidade"
+      aria-label="Cidade"
+      [formControl]="cityControl"
+      [matAutocomplete]="autoCity">
+
+    <mat-autocomplete
+      #autoCity="matAutocomplete"
+      (optionSelected)="onCitySelected($event.option.value)"
+      [displayWith]="getCityDisplayName">
+      <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+        {{getCityDisplayName(city)}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>

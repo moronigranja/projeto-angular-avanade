@@ -1,6 +1,10 @@
 # ProjetoAngularAvanade
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
+Este projeto foi gerado com [Angular CLI](https://github.com/angular/angular-cli) versão 10.2.0.
+
+Este projeto tem como objetivo demonstrar o meu domínio de Angular como parte do projeto de aceleração da [Avanade](https://www.avanade.com/pt-br) em parceria com a [Digital Innovation One](https://digitalinnovation.one/).
+
+O projeto consiste em uma Single Page Application desenvolvida em Angular utilizando alguns componentes simples
 
 ## Development server
 
