@@ -1,0 +1,10 @@
+div{
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    background: #676767;
+    margin-top: 10px;
+}

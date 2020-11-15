@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { GeoDbService } from 'wft-geodb-angular-client';
 import { GeoResponse } from 'wft-geodb-angular-client/lib/model/geo-response.model';
-import { PlaceDetails } from 'wft-geodb-angular-client/lib/model/place-details.model';
 import { PlaceSummary } from 'wft-geodb-angular-client/lib/model/place-summary.model';
+import { Local } from '../models/local';
+import { FormatarNomeCidadePipe } from '../pipes/formatar-nome-cidade.pipe';
+import { LocalService } from '../services/local.service';
 
 @Component({
   selector: 'app-seletor-cidade',
@@ -17,11 +20,25 @@ export class SeletorCidadeComponent implements OnInit {
 
   selectedCity: PlaceSummary;
   cityControl: FormControl;
-  filteredCities: Observable<PlaceSummary[]>;
+  filteredCities: Observable<PlaceSummary[]>;  
+  cidadeAtual : Local;
 
-  constructor(private geoDbService: GeoDbService) { }
+  @Output() cidadeAlteradaEvent = new EventEmitter<string>();
+  @Output() fusoAlteradoEvent = new EventEmitter<string>();
+  
+
+  constructor(private geoDbService: GeoDbService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private localService: LocalService) { }
 
   ngOnInit() {
+    this.carregarCidadeFromRoute();
+    this.bindAutoCompleteEvent();
+  }
+
+  bindAutoCompleteEvent() {
+    this.geoDbService.setApiKey("bb18e39e83msh469d01d9cc386c3p18e035jsn2da951800d92");
 
     this.cityControl = new FormControl();
 
@@ -45,7 +62,6 @@ export class SeletorCidadeComponent implements OnInit {
                   (response: GeoResponse<PlaceSummary[]>) => {
                     return response.data;
                   },
-
                   (error: any) => console.log(error)
                 )
               );
@@ -56,6 +72,40 @@ export class SeletorCidadeComponent implements OnInit {
       );
   }
 
+  carregarCidadeFromRoute() {
+    this.route.queryParams
+    .subscribe(params => {
+      console.log(params);
+      if(!params?.nomeCidade){
+        console.log("Não encontrado, buscando pelo IP.");
+        this.localService.getRequesterLocation()
+          .subscribe(local => this.atualizarCidade(local));
+      }
+    });
+
+    this.route.queryParams
+    .pipe(
+      filter(params => params.nomeCidade),      
+    )
+    .subscribe(params =>{
+      console.log("verificar nome");
+      let nomeCidade = params.nomeCidade;
+      console.log("nomeCidade da URL: ", nomeCidade);
+    });
+  }
+
+  atualizarCidade(cidade: Local){
+    this.cidadeAtual = cidade;
+    console.log(`Cidade: ${cidade.city}, Geoname ID: ${cidade.location.geoname_id}`);
+
+    let pipe = new FormatarNomeCidadePipe();
+
+    this.router.navigate(['.'], {
+      queryParams: {nomeCidade : pipe.transform(cidade)}, 
+      queryParamsHandling: 'merge'
+    });
+  }
+
   getCityDisplayName(city: PlaceSummary) {
     if (!city) {
         return null;
@@ -64,7 +114,7 @@ export class SeletorCidadeComponent implements OnInit {
     let name = city.name;
 
     if (city.region) {
-        name += ", " + city.region;
+        name += ", " + city.regionCode;
     }
 
     name += ", " + city.country;
@@ -75,13 +125,31 @@ export class SeletorCidadeComponent implements OnInit {
 
   onCitySelected(city: PlaceSummary) {
 
-    this.geoDbService.findPlace({
-      placeId: city.id
-    })
-      .subscribe(
-        (response: GeoResponse<PlaceDetails>) => {
-          this.selectedCity = response.data;
-        });
+    // this.geoDbService.findPlace({
+    //   placeId: city.id
+    // })
+    //   .subscribe(
+    //     (response: GeoResponse<PlaceDetails>) => {
+    //       this.selectedCity = response.data;
+    //     });
+
+    this.atualizarDataeHoraCidade(this.getCityDisplayName(city));
+
+    this.geoDbService.getPlaceDateTime(city.id)
+    .subscribe(
+           (response: GeoResponse<string>) => {
+             console.log(response.data);
+             this.fusoAlteradoEvent.emit(response.data);
+           });
+  }
+
+  onEnter(){
+    console.log("onEnter", this.cityControl.value);
+    this.atualizarDataeHoraCidade(this.cityControl.value);
+  }
+
+  atualizarDataeHoraCidade(cidade : string){
+    this.cidadeAlteradaEvent.emit(cidade);
   }
 
 }

@@ -1,10 +1,11 @@
-  <mat-form-field class="seletor-cidade">
+  <mat-form-field class="seletor-cidade" >
     <input
       matInput
       placeholder="Digite o nome da cidade"
       aria-label="Cidade"
       [formControl]="cityControl"
-      [matAutocomplete]="autoCity">
+      [matAutocomplete]="autoCity"
+      (keyup.enter)="onEnter()">
 
     <mat-autocomplete
       #autoCity="matAutocomplete"

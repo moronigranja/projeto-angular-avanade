@@ -5,30 +5,37 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatSliderModule } from '@angular/material/slider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 import { SeletorCidadeComponent } from './seletor-cidade/seletor-cidade.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GeoDbProModule } from 'wft-geodb-angular-client';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FormatarNomeCidadePipe } from './pipes/formatar-nome-cidade.pipe';
+import { RelogioComponent } from './relogio/relogio.component';
+import { FormatarHoraCorrigidaPipe } from './pipes/formatar-hora-corrigida.pipe';
+import { PrevisaoTempoComponent } from './previsao-tempo/previsao-tempo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SeletorCidadeComponent,
-    FormatarNomeCidadePipe
+    FormatarNomeCidadePipe,
+    RelogioComponent,
+    FormatarHoraCorrigidaPipe,
+    PrevisaoTempoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatSliderModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatCardModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -38,9 +45,9 @@ import { FormatarNomeCidadePipe } from './pipes/formatar-nome-cidade.pipe';
     })
   ],
   exports: [
-    MatSliderModule,
     MatFormFieldModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

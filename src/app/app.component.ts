@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { LocalService } from './services/local.service';
 import { Local } from './models/local';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Route } from '@angular/compiler/src/core';
-import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { ClimaService } from './services/clima.service';
+import { FormatarNomeCidadePipe } from './pipes/formatar-nome-cidade.pipe';
+import { Clima } from './models/clima';
 
 @Component({
   selector: 'app-root',
@@ -14,38 +11,36 @@ import { ClimaService } from './services/clima.service';
 })
 export class AppComponent {
   title = 'ClimaTempo';
-  cidadeAtual : Local;
-  temperatura = "X";
+  localTimeOffset : number = 0;
+  climaAtual : Clima;
 
-  constructor(private localService: LocalService, 
-              private route: ActivatedRoute, 
-              private router: Router,
-              private climaService: ClimaService){}
+  constructor(private climaService: ClimaService){}
 
-  ngOnInit() : void{
-    this.localService.getRequesterLocation()
-      .subscribe(local => this.atualizarCidade(local));
+  ngOnInit() : void{    
   }
 
-  atualizarCidade(cidade: Local){
-    this.cidadeAtual = cidade;
-    console.log(`Cidade: ${cidade.city}, Geoname ID: ${cidade.location.geoname_id}`);
-    this.router.navigate(['.'], {
-      queryParams: cidade, 
-      queryParamsHandling: 'merge'
-    });
-    this.atualizarClima(cidade);
-  }
-
-  atualizarClima(cidade: Local){
+  atualizarClima(cidade: string){
+    console.log("atualizarClima",cidade);
     if(!cidade) return;
 
-    console.log("Atualizando clima de ", cidade.city);
-    this.climaService.getClimaCidade(cidade)
+    console.log("Atualizando clima de ", cidade);
+    this.climaService.getClimaCidadePreFormatada(cidade)
     .subscribe(clima =>
       {
-        console.log(clima.main.temp);
-        this.temperatura = `${clima.main.temp}° C`;
+        console.log("temperatura", clima.main.temp, "fuso", clima.timezone);
+        this.localTimeOffset = clima.timezone;
+        this.climaAtual = clima;
+        console.log(clima);
       });
+  }
+
+  //horarioLocal vem no formato: 2020-11-15T01:13:14.733339-03:00
+  atualizarRelogio(horarioLocal : string ){
+    console.log("atualizarRelogio");
+    let multiplicador = horarioLocal.substr(-6,1) == '-' ? -1 : 1;
+    let horas = parseInt(horarioLocal.substr(-5,2));
+    let minutos = parseInt(horarioLocal.substr(-2,2));
+    this.localTimeOffset =  ((horas * 3600) + (minutos * 60)) * multiplicador;
+    console.log(this.localTimeOffset);
   }
 }

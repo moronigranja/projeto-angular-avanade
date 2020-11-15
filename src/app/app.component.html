@@ -1,3 +1,11 @@
-<h1>{{title}}</h1>
-Você esta em {{cidadeAtual | formatarNomeCidade}}
+<mat-card class='mat-elevation-z5'>
+    <mat-card-title>{{cidadeAtual | formatarNomeCidade}}
+        <app-seletor-cidade (fusoAlteradoEvent)="atualizarRelogio($event)" (cidadeAlteradaEvent)="atualizarClima($event)"></app-seletor-cidade>
+    </mat-card-title>
+    <mat-card-content>
+        <app-previsao-tempo [climaAtual] = "climaAtual"></app-previsao-tempo>
+        <app-relogio [timeoffset] = "localTimeOffset"></app-relogio>
+    </mat-card-content>
+</mat-card>
+
 <router-outlet></router-outlet>

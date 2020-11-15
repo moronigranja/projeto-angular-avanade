@@ -28,6 +28,6 @@ export interface Local {
     city : string;
     zip : string;
     latitude : number;
-    longitude : -118.2413;
+    longitude : number;
     location: Localdetalhes;
 }

@@ -1,0 +1,37 @@
+.flex-row {
+    display: flex;
+    flex-direction: row;      
+}
+
+.flex-row div{
+    flex: 50%;
+    padding: 10px;
+    border-radius: 10px;
+    height: 110px;
+}
+
+.outlook {
+    background:#181050;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.temp {
+    background: #4e2f1d;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.big-text {
+    font-size: 30px;
+    padding-bottom: 10px;
+}
+
+.image {
+    height: 80px;
+}

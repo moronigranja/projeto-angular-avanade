@@ -1,0 +1,11 @@
+<div class="flex-row">
+    <div class="temp">
+      <span class="big-text">{{climaAtual?.main.temp}}° C</span>
+      <span>Sensação térmica </span>
+      <span>{{climaAtual?.main.feels_like}}° C</span>
+    </div>
+    <div class="outlook mat-accent">
+      <img src="https://openweathermap.org/img/wn/{{climaAtual?.weather[0].icon}}@2x.png" class='image' />
+      <span>{{climaAtual?.weather[0].description | titlecase }}</span>
+    </div>
+</div>

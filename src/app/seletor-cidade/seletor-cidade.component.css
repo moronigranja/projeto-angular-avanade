@@ -1,7 +1,8 @@
 .seletor-cidade{
-    width: 50%;
-    min-width: 400px;
+    width: 35%;
+    min-width: 300px;
     margin-left: auto;
     margin-right: auto;
     display: block;
+    text-align: center;
 }

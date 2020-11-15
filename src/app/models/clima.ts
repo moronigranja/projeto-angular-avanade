@@ -21,7 +21,7 @@ interface main{
 
 export interface Clima {
     coord : coord;
-    weather : weather;
+    weather : weather[];
     base : string;
     main : main;
     visibility : number;

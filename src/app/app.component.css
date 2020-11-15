@@ -1,3 +1,9 @@
-h1{
+mat-card{
+    width: 350px;
+    display: block;
+    margin: 10px auto 10px auto;
+}
+
+mat-card-title{
     text-align: center;
 }
