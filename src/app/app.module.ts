@@ -10,14 +10,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
-import { SeletorCidadeComponent } from './seletor-cidade/seletor-cidade.component';
+import { SeletorCidadeComponent } from './components/seletor-cidade/seletor-cidade.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GeoDbProModule } from 'wft-geodb-angular-client';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FormatarNomeCidadePipe } from './pipes/formatar-nome-cidade.pipe';
-import { RelogioComponent } from './relogio/relogio.component';
+import { RelogioComponent } from './components/relogio/relogio.component';
 import { FormatarHoraCorrigidaPipe } from './pipes/formatar-hora-corrigida.pipe';
-import { PrevisaoTempoComponent } from './previsao-tempo/previsao-tempo.component';
+import { PrevisaoTempoComponent } from './components/previsao-tempo/previsao-tempo.component';
 
 @NgModule({
   declarations: [

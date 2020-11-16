@@ -1,11 +1,40 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { GeoDbService } from 'wft-geodb-angular-client';
+import { GeoResponse } from 'wft-geodb-angular-client/lib/model/geo-response.model';
+import { PlaceSummary } from 'wft-geodb-angular-client/lib/model/place-summary.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CidadeService {
+  private POPULACAO_MINIMA_CIDADE = 40000;
+  private MAX_RESULTADOS = 7;
 
   constructor(private geoDbService: GeoDbService) { }
+
+  getCidades(prefixoNomeCidade : string) : Observable<PlaceSummary[]>{
+    this.geoDbService.setApiKey("bb18e39e83msh469d01d9cc386c3p18e035jsn2da951800d92");
+    
+    let listaCidades = this.geoDbService.findPlaces({
+      namePrefix: prefixoNomeCidade,
+      minPopulation: this.POPULACAO_MINIMA_CIDADE,
+      types: ['CITY'],
+      sortDirectives: ['-population'],
+      limit: this.MAX_RESULTADOS,
+      offset: 0
+    })
+      .pipe(
+        map(
+          (response: GeoResponse<PlaceSummary[]>) => {
+            return response.data;
+          },
+          (error: any) => console.log(error)
+        )
+      );
+
+      return listaCidades;
+  }
   
 }

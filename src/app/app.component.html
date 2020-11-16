@@ -3,8 +3,7 @@
         <app-seletor-cidade (cidadeAlteradaEvent)="atualizarInfoCidade($event)"></app-seletor-cidade>
     </mat-card-title>
     <mat-card-content>
-        <app-previsao-tempo [climaAtual] = "climaAtual"></app-previsao-tempo>
-        <app-relogio [timeoffset] = "localTimeOffset"></app-relogio>
+        <app-previsao-tempo [nomeCidade] = "nomeCidade"></app-previsao-tempo>
     </mat-card-content>
 </mat-card>
 

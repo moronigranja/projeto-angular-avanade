@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SeletorCidadeComponent } from './seletor-cidade/seletor-cidade.component';
+import { SeletorCidadeComponent } from './components/seletor-cidade/seletor-cidade.component';
 
 const routes: Routes = [
   {path: 'clima', component: SeletorCidadeComponent}
