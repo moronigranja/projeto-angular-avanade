@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  GEODB_API_KEY : "97ccafa26emsh68f9e7ff435898ap1fbc36jsn8626d5b9fe73",
+  OPENWEATHER_API_KEY : "a35aa12e8a38bcb9434f6e2d5151f06b",
+  IPSTACK_API_KEY : "8125fa87a1734cba1bb58491158a8cd6"
 };
 
 /*
