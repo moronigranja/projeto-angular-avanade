@@ -8,11 +8,6 @@ import { Clima } from '../models/clima';
 })
 export class PrevisaoTempoComponent implements OnInit {
 
-  // temperaturaAtual : string = "27 C";
-  // sensacaoTermica : string = "24 C";
-  // descricao : string = "Nuvens Esparsas";
-  // urlBase : string = "http://openweathermap.org/img/wn/";
-  // urlIcone : string = "https://openweathermap.org/img/wn/02d@2x.png";
   @Input() climaAtual : Clima;
 
   constructor() { }

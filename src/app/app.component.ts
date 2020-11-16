@@ -19,7 +19,7 @@ export class AppComponent {
   ngOnInit() : void{    
   }
 
-  atualizarClima(cidade: string){
+  atualizarInfoCidade(cidade: string){
     console.log("atualizarClima",cidade);
     if(!cidade) return;
 
@@ -32,15 +32,5 @@ export class AppComponent {
         this.climaAtual = clima;
         console.log(clima);
       });
-  }
-
-  //horarioLocal vem no formato: 2020-11-15T01:13:14.733339-03:00
-  atualizarRelogio(horarioLocal : string ){
-    console.log("atualizarRelogio");
-    let multiplicador = horarioLocal.substr(-6,1) == '-' ? -1 : 1;
-    let horas = parseInt(horarioLocal.substr(-5,2));
-    let minutos = parseInt(horarioLocal.substr(-2,2));
-    this.localTimeOffset =  ((horas * 3600) + (minutos * 60)) * multiplicador;
-    console.log(this.localTimeOffset);
   }
 }

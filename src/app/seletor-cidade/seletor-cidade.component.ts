@@ -1,3 +1,4 @@
+import { EventListenerFocusTrapInertStrategy } from '@angular/cdk/a11y';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,12 +21,9 @@ export class SeletorCidadeComponent implements OnInit {
 
   selectedCity: PlaceSummary;
   cityControl: FormControl;
-  filteredCities: Observable<PlaceSummary[]>;  
-  cidadeAtual : Local;
+  filteredCities: Observable<PlaceSummary[]>;
 
-  @Output() cidadeAlteradaEvent = new EventEmitter<string>();
-  @Output() fusoAlteradoEvent = new EventEmitter<string>();
-  
+  @Output() cidadeAlteradaEvent = new EventEmitter<string>();  
 
   constructor(private geoDbService: GeoDbService,
               private route: ActivatedRoute,
@@ -33,7 +31,7 @@ export class SeletorCidadeComponent implements OnInit {
               private localService: LocalService) { }
 
   ngOnInit() {
-    this.carregarCidadeFromRoute();
+    this.carregarCidadeInicial();
     this.bindAutoCompleteEvent();
   }
 
@@ -72,84 +70,73 @@ export class SeletorCidadeComponent implements OnInit {
       );
   }
 
-  carregarCidadeFromRoute() {
-    this.route.queryParams
+  carregarCidadeInicial(){
+    this.route.queryParams    
     .subscribe(params => {
-      console.log(params);
-      if(!params?.nomeCidade){
-        console.log("Não encontrado, buscando pelo IP.");
-        this.localService.getRequesterLocation()
-          .subscribe(local => this.atualizarCidade(local));
-      }
-    });
-
-    this.route.queryParams
-    .pipe(
-      filter(params => params.nomeCidade),      
-    )
-    .subscribe(params =>{
-      console.log("verificar nome");
-      let nomeCidade = params.nomeCidade;
-      console.log("nomeCidade da URL: ", nomeCidade);
+      let nomeCidade = params?.nomeCidade;
+      this.processarNomeCidade(nomeCidade);
     });
   }
 
-  atualizarCidade(cidade: Local){
-    this.cidadeAtual = cidade;
-    console.log(`Cidade: ${cidade.city}, Geoname ID: ${cidade.location.geoname_id}`);
+  processarNomeCidade(cidade : string){
+    if(!cidade){
+      console.log("Não encontrado, buscando pelo IP.");
+      this.localizarCidadePeloIP();
+    }
+    else{
+      console.log("nomeCidade da URL: ", cidade);
+      this.atualizarDataeHoraCidade(cidade);
+    }
+  }
 
-    let pipe = new FormatarNomeCidadePipe();
+  localizarCidadePeloIP(){
+    this.localService.getRequesterLocation()
+    .subscribe(local => {
+      let pipe = new FormatarNomeCidadePipe();
+      let nomeCidade = pipe.transform(local);
+      this.atualizarQueryParams(nomeCidade);
+      this.atualizarDataeHoraCidade(nomeCidade);
+    });
+  }
 
+  atualizarQueryParams(cidade: string){
     this.router.navigate(['.'], {
-      queryParams: {nomeCidade : pipe.transform(cidade)}, 
+      queryParams: {nomeCidade : cidade}, 
       queryParamsHandling: 'merge'
     });
   }
 
   getCityDisplayName(city: PlaceSummary) {
-    if (!city) {
+    if(typeof(city) == "string"){
+      return city;
+    }
+    else if (!city?.name) {
         return null;
     }
 
     let name = city.name;
 
-    if (city.region) {
-        name += ", " + city.regionCode;
-    }
-
+    if (city.region) name += ", " + city.regionCode;
     name += ", " + city.country;
-
     console.log('getCityDisplayName ' + name);
     return name;
   }
 
   onCitySelected(city: PlaceSummary) {
-
-    // this.geoDbService.findPlace({
-    //   placeId: city.id
-    // })
-    //   .subscribe(
-    //     (response: GeoResponse<PlaceDetails>) => {
-    //       this.selectedCity = response.data;
-    //     });
-
-    this.atualizarDataeHoraCidade(this.getCityDisplayName(city));
-
-    this.geoDbService.getPlaceDateTime(city.id)
-    .subscribe(
-           (response: GeoResponse<string>) => {
-             console.log(response.data);
-             this.fusoAlteradoEvent.emit(response.data);
-           });
+    let nomeCidade = this.getCityDisplayName(city);
+    this.atualizarQueryParams(nomeCidade);
+    this.atualizarDataeHoraCidade(nomeCidade);
   }
 
   onEnter(){
-    console.log("onEnter", this.cityControl.value);
     this.atualizarDataeHoraCidade(this.cityControl.value);
   }
 
   atualizarDataeHoraCidade(cidade : string){
+    console.log("atualizarDataeHoraCidade", cidade);
+    this.cityControl.setValue(cidade);
     this.cidadeAlteradaEvent.emit(cidade);
+    console.log("this.cityControl.value",this.cityControl.value);
   }
 
 }
