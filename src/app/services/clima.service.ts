@@ -11,7 +11,7 @@ import { FormatarNomeCidadePipe } from '../pipes/formatar-nome-cidade.pipe';
   providedIn: 'root'
 })
 export class ClimaService {
-  url = "http://api.openweathermap.org/data/2.5/weather?q=";
+  url = "https://api.openweathermap.org/data/2.5/weather?q=";
   api_key = environment.OPENWEATHER_API_KEY
   unit_type = "metric";
   language = "pt_br";
