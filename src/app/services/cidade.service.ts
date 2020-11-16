@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { GeoDbService } from 'wft-geodb-angular-client';
 import { GeoResponse } from 'wft-geodb-angular-client/lib/model/geo-response.model';
 import { PlaceSummary } from 'wft-geodb-angular-client/lib/model/place-summary.model';
@@ -15,8 +16,9 @@ export class CidadeService {
   constructor(private geoDbService: GeoDbService) { }
 
   getCidades(prefixoNomeCidade : string) : Observable<PlaceSummary[]>{
-    this.geoDbService.setApiKey("bb18e39e83msh469d01d9cc386c3p18e035jsn2da951800d92");
     
+    this.geoDbService.setApiKey(environment.GEODB_API_KEY);
+
     let listaCidades = this.geoDbService.findPlaces({
       namePrefix: prefixoNomeCidade,
       minPopulation: this.POPULACAO_MINIMA_CIDADE,

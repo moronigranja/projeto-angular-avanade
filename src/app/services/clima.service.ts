@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Clima } from '../models/clima';
 import { Local } from '../models/local';
 import { FormatarNomeCidadePipe } from '../pipes/formatar-nome-cidade.pipe';
@@ -11,7 +12,7 @@ import { FormatarNomeCidadePipe } from '../pipes/formatar-nome-cidade.pipe';
 })
 export class ClimaService {
   url = "http://api.openweathermap.org/data/2.5/weather?q=";
-  api_key = "c2962293fb39c910df6a746b04b3d5d3";
+  api_key = environment.OPENWEATHER_API_KEY
   unit_type = "metric";
   language = "pt_br";
 

@@ -2,18 +2,19 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { Local } from '../models/local';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalService {
-  url = 'http://api.ipstack.com/check?access_key=8e1e6676f5519e5318ba9a8e88d677af';
+  url = 'http://api.ipstack.com/check?access_key=';
 
   constructor(private httpClient: HttpClient) { }
   
   getRequesterLocation(): Observable<Local> {
-    return this.httpClient.get<Local>(this.url)
+    return this.httpClient.get<Local>(this.url + environment.IPSTACK_API_KEY)
       .pipe(
         retry(2),
         catchError(this.handleError));

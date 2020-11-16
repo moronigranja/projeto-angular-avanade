@@ -19,6 +19,7 @@ import { FormatarNomeCidadePipe } from './pipes/formatar-nome-cidade.pipe';
 import { RelogioComponent } from './components/relogio/relogio.component';
 import { FormatarHoraCorrigidaPipe } from './pipes/formatar-hora-corrigida.pipe';
 import { PrevisaoTempoComponent } from './components/previsao-tempo/previsao-tempo.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { PrevisaoTempoComponent } from './components/previsao-tempo/previsao-tem
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     GeoDbProModule.forRoot({
-      apiKey: "bb18e39e83msh469d01d9cc386c3p18e035jsn2da951800d92",
+      apiKey: environment.GEODB_API_KEY,
       serviceUri: "https://wft-geo-db.p.rapidapi.com"
     })
   ],
