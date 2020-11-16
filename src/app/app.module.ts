@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 import { SeletorCidadeComponent } from './components/seletor-cidade/seletor-cidade.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -39,6 +40,7 @@ import { PrevisaoTempoComponent } from './components/previsao-tempo/previsao-tem
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
     GeoDbProModule.forRoot({
       apiKey: "bb18e39e83msh469d01d9cc386c3p18e035jsn2da951800d92",
       serviceUri: "https://wft-geo-db.p.rapidapi.com"
@@ -47,7 +49,8 @@ import { PrevisaoTempoComponent } from './components/previsao-tempo/previsao-tem
   exports: [
     MatFormFieldModule,
     MatAutocompleteModule,
-    MatCardModule
+    MatCardModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

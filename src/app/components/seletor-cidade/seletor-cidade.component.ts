@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -27,6 +27,7 @@ export class SeletorCidadeComponent implements OnInit {
               private localService: LocalService) { }
 
   ngOnInit() {    
+    this.cityControl.setValue("Carregando...", {emitEvent:false});
     setTimeout(() => {
       this.carregarCidadeInicial();
     }, 1000);     
@@ -66,7 +67,7 @@ export class SeletorCidadeComponent implements OnInit {
       console.log("nomeCidade da URL: ", cidade);
       this.atualizarDataeHoraCidade(cidade);
     }
-    this.bindAutoCompleteEvent(); //so faz o bing depois de carregar o valor inicial
+    this.bindAutoCompleteEvent(); //so faz o bind depois de carregar o valor inicial
   }
 
   localizarCidadePeloIP(){
@@ -105,7 +106,7 @@ export class SeletorCidadeComponent implements OnInit {
 
   atualizarDataeHoraCidade(cidade : string){
     console.log("Cidade selecionada:", cidade);
-    this.cityControl.setValue(cidade);
+    this.cityControl.setValue(cidade, {emitEvent:false});
     this.cidadeAlteradaEvent.emit(cidade);
   }
 

@@ -3,8 +3,11 @@
         <app-seletor-cidade (cidadeAlteradaEvent)="atualizarInfoCidade($event)"></app-seletor-cidade>
     </mat-card-title>
     <mat-card-content>
-        <app-previsao-tempo [nomeCidade] = "nomeCidade"></app-previsao-tempo>
-    </mat-card-content>
+        <app-previsao-tempo [nomeCidade] = "nomeCidade" *ngIf="nomeCidade"></app-previsao-tempo>
+        <div class='spinner'>
+            <mat-spinner *ngIf="!nomeCidade"></mat-spinner>
+        </div>
+        </mat-card-content>
 </mat-card>
 
 <router-outlet></router-outlet>
